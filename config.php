@@ -1,10 +1,7 @@
 <?php
-// config.php - File konfigurasi dan inisialisasi session
 session_start();
 
-// Inisialisasi data default jika belum ada
 if (!isset($_SESSION['users'])) {
-    // Default user: admin / admin123
     $_SESSION['users'] = [
         ['username' => 'admin', 'password' => password_hash('admin123', PASSWORD_DEFAULT)]
     ];
@@ -14,12 +11,10 @@ if (!isset($_SESSION['contacts'])) {
     $_SESSION['contacts'] = [];
 }
 
-// Fungsi untuk cek apakah user sudah login
 function isLoggedIn() {
     return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 }
 
-// Fungsi untuk redirect jika belum login
 function requireLogin() {
     if (!isLoggedIn()) {
         header('Location: login.php');
@@ -27,17 +22,14 @@ function requireLogin() {
     }
 }
 
-// Fungsi untuk generate ID unik
 function generateId() {
     return uniqid();
 }
 
-// Fungsi untuk mendapatkan semua kontak
 function getContacts() {
     return $_SESSION['contacts'] ?? [];
 }
 
-// Fungsi untuk menambah kontak
 function addContact($data) {
     $contact = [
         'id' => generateId(),
@@ -51,7 +43,6 @@ function addContact($data) {
     return true;
 }
 
-// Fungsi untuk update kontak
 function updateContact($id, $data) {
     foreach ($_SESSION['contacts'] as &$contact) {
         if ($contact['id'] === $id) {
@@ -65,7 +56,6 @@ function updateContact($id, $data) {
     return false;
 }
 
-// Fungsi untuk hapus kontak
 function deleteContact($id) {
     $_SESSION['contacts'] = array_filter($_SESSION['contacts'], function($contact) use ($id) {
         return $contact['id'] !== $id;
@@ -74,7 +64,6 @@ function deleteContact($id) {
     return true;
 }
 
-// Fungsi untuk mendapatkan kontak berdasarkan ID
 function getContactById($id) {
     foreach ($_SESSION['contacts'] as $contact) {
         if ($contact['id'] === $id) {
@@ -84,7 +73,6 @@ function getContactById($id) {
     return null;
 }
 
-// Fungsi untuk validasi input kontak
 function validateContact($data) {
     $errors = [];
     
@@ -107,7 +95,6 @@ function validateContact($data) {
     return $errors;
 }
 
-// Fungsi untuk search kontak
 function searchContacts($keyword) {
     if (empty($keyword)) {
         return getContacts();
