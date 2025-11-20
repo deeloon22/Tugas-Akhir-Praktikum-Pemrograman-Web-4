@@ -1,17 +1,13 @@
 <?php
-// edit_contact.php - Halaman edit kontak
 require_once 'config.php';
 
-// Pastikan user sudah login
 requireLogin();
 
 $errors = [];
 $success = '';
 
-// Ambil ID kontak
 $id = $_GET['id'] ?? '';
 
-// Cek apakah kontak ada
 $contact = getContactById($id);
 
 if (!$contact) {
@@ -19,7 +15,6 @@ if (!$contact) {
     exit;
 }
 
-// Proses update kontak
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'nama' => trim($_POST['nama'] ?? ''),
@@ -28,18 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'alamat' => trim($_POST['alamat'] ?? '')
     ];
     
-    // Validasi
     $errors = validateContact($data);
     
-    // Jika tidak ada error, update kontak
     if (empty($errors)) {
         updateContact($id, $data);
         $success = 'Kontak berhasil diperbarui!';
         
-        // Update data kontak untuk ditampilkan
         $contact = getContactById($id);
         
-        // Redirect ke index setelah 2 detik
         header('refresh:2;url=index.php');
     }
 }
@@ -62,21 +53,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
         
-        <!-- Breadcrumb -->
         <div class="breadcrumb">
             <a href="index.php">🏠 Dashboard</a>
             <span>/</span>
             <span>Edit Kontak</span>
         </div>
         
-        <!-- Form Card -->
         <div class="card">
             <div class="card-header">
                 <h2>✏️ Edit Kontak</h2>
                 <p>Perbarui informasi kontak: <strong><?= htmlspecialchars($contact['nama']) ?></strong></p>
             </div>
             
-            <!-- Alert Messages -->
             <?php if ($success): ?>
                 <div class="alert success">
                     ✓ <?= htmlspecialchars($success) ?>
@@ -139,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
         
-        <!-- Footer -->
         <div class="footer">
             <p>© 2024 Sistem Manajemen Kontak | Dibuat dengan ❤️</p>
         </div>
