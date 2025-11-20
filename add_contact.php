@@ -1,14 +1,11 @@
 <?php
-// add_contact.php - Halaman tambah kontak
 require_once 'config.php';
 
-// Pastikan user sudah login
 requireLogin();
 
 $errors = [];
 $success = '';
 
-// Proses tambah kontak
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'nama' => trim($_POST['nama'] ?? ''),
@@ -17,15 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'alamat' => trim($_POST['alamat'] ?? '')
     ];
     
-    // Validasi
     $errors = validateContact($data);
     
-    // Jika tidak ada error, simpan kontak
     if (empty($errors)) {
         addContact($data);
         $success = 'Kontak berhasil ditambahkan!';
         
-        // Redirect ke index setelah 2 detik
         header('refresh:2;url=index.php');
     }
 }
@@ -55,14 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span>Tambah Kontak</span>
         </div>
         
-        <!-- Form Card -->
         <div class="card">
             <div class="card-header">
                 <h2>➕ Tambah Kontak Baru</h2>
                 <p>Isi form di bawah untuk menambahkan kontak baru ke dalam sistem</p>
             </div>
             
-            <!-- Alert Messages -->
             <?php if ($success): ?>
                 <div class="alert success">
                     ✓ <?= htmlspecialchars($success) ?>
@@ -78,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
             
-            <!-- Form -->
             <form method="POST" class="contact-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -125,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
         
-        <!-- Footer -->
         <div class="footer">
             <p>© 2024 Sistem Manajemen Kontak | Dibuat dengan ❤️</p>
         </div>
